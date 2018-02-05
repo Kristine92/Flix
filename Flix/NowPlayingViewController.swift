@@ -15,9 +15,12 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
     var movies: [[String: Any]] = []
     var refreshControl: UIRefreshControl!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        activityIndicator.startAnimating()
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(NowPlayingViewController.didPullToRefresh(_:)), for: .valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
@@ -43,6 +46,7 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
                 self.movies = movies
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
+                self.activityIndicator.stopAnimating()
             }
         }
         task.resume()
